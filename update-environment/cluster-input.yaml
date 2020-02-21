@@ -1,5 +1,2 @@
 # Set your cluster domain
 clusterURL: ""
-
-# Set your cluster's Service Provider API token
-serviceProviderAPIToken: ""

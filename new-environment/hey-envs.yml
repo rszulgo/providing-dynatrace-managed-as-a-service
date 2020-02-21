@@ -19,7 +19,7 @@
       register: environmentResponse
       
     - pause:
-        seconds: 15
+        seconds: 5
 
     - name: Step 2a - Create Configuration Token for the environment {{ environmentResponse.json.id }} ({{teamName}})
       uri: 
