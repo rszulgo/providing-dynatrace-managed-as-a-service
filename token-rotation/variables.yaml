@@ -1,0 +1,6 @@
+---
+# --------- Management Zones API --------
+mzAPI: "/api/config/v1/managementZones"
+mzRequest: 
+  name: "{{ mzName }}"
+
