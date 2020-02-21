@@ -1,0 +1,20 @@
+---
+- name: Automated management provisioning
+  hosts: localhost
+  vars_files:
+    - cluster-input.yaml
+    - environment-id.yaml
+    - config-token.yaml
+    - variables.yml
+
+  tasks:
+    - name: Create management zones {{ mzName }}
+      uri: 
+          url: "{{ clusterURL }}/e/{{ environmentID }}{{ mzAPI }}"
+          method: POST
+          headers:
+            Content-Type: "application/json"
+            Authorization: "Api-Token {{ configToken }}"
+          body: "{{ mzRequest | to_json}}"
+          status_code: 201,404
+          timeout: 30

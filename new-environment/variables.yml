@@ -1,0 +1,608 @@
+---
+# --------- Environments API --------
+environmentsAPI: "{{ clusterURL }}/api/cluster/v1/environments"
+environmentRequest: 
+  name: "{{ teamName }}"
+  state: "ENABLED"
+  tags: 
+    - "team:{{teamName}}"
+    - "source:autoProvisioned"
+  trial: "false"
+
+#------------ Tokens API ---------
+tokensAPI: "/api/v1/tokens"
+
+configTokenRequest: 
+  name: "Config token"
+  scopes:
+    - "ReadConfig"
+    - "WriteConfig"
+  expiresIn:
+    value: "3600"
+    unit: "SECONDS"
+
+# ----- Dashboard API --------
+dashboardAPI: "/api/config/v1/dashboards"
+dashboardRequest:
+  metadata:
+    configurationVersions:
+    - "3"
+    clusterVersion: "1.184.82.20200116-161337"
+  dashboardMetadata:
+    name: "Dashboard for {{teamName}}"
+    shared: "true"
+    sharingDetails:
+      linkShared: "true"
+      published: "true"
+    dashboardFilter:
+      timeframe: ""
+      managementZone: 
+  tiles:
+  - name: End Users
+    tileType: HEADER
+    configured: true
+    bounds:
+      top: 0
+      left: 76
+      width: 190
+      height: 38
+    tileFilter:
+      timeframe: 
+      managementZone: 
+  - name: Database Services
+    tileType: HEADER
+    configured: true
+    bounds:
+      top: 0
+      left: 912
+      width: 228
+      height: 38
+    tileFilter:
+      timeframe: 
+      managementZone: 
+  - name: Server-side Services
+    tileType: HEADER
+    configured: true
+    bounds:
+      top: 0
+      left: 494
+      width: 266
+      height: 38
+    tileFilter:
+      timeframe: 
+      managementZone: 
+  - name: Infrastructure
+    tileType: HEADER
+    configured: true
+    bounds:
+      top: 0
+      left: 1368
+      width: 228
+      height: 38
+    tileFilter:
+      timeframe: 
+      managementZone: 
+  - name: Problems
+    tileType: OPEN_PROBLEMS
+    configured: true
+    bounds:
+      top: 38
+      left: 76
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+  - name: ''
+    tileType: APPLICATIONS
+    configured: true
+    bounds:
+      top: 190
+      left: 0
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: APPLICATION
+      customName: Browser Apps
+      defaultName: Web  applications
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        APPLICATION:
+          APPLICATION_TYPE:
+          - '0'
+    chartVisible: true
+  - name: ''
+    tileType: APPLICATIONS
+    configured: true
+    bounds:
+      top: 190
+      left: 152
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: APPLICATION
+      customName: Mobile Apps
+      defaultName: Mobile  applications
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        APPLICATION:
+          APPLICATION_TYPE:
+          - '1'
+    chartVisible: true
+  - name: ''
+    tileType: APPLICATIONS
+    configured: true
+    bounds:
+      top: 342
+      left: 0
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: APPLICATION
+      customName: DCRUM Apps
+      defaultName: Enterprise  applications
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        APPLICATION:
+          APPLICATION_TYPE:
+          - '2'
+    chartVisible: true
+  - name: Live user activity
+    tileType: UEM_ACTIVE_SESSIONS
+    configured: true
+    bounds:
+      top: 532
+      left: 0
+      width: 304
+      height: 304
+    tileFilter:
+      timeframe: 
+      managementZone: 
+  - name: ''
+    tileType: DATABASES_OVERVIEW
+    configured: true
+    bounds:
+      top: 38
+      left: 874
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: DATABASE
+      customName: MongoDB
+      defaultName: MongoDB
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        DATABASE:
+          ATTRIBUTE_BASED_DB_VENDOR:
+          - MongoDB
+    chartVisible: true
+  - name: ''
+    tileType: DATABASES_OVERVIEW
+    configured: true
+    bounds:
+      top: 38
+      left: 1026
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: DATABASE
+      customName: MySQL
+      defaultName: MySQL
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        DATABASE:
+          ATTRIBUTE_BASED_DB_VENDOR:
+          - MySQL
+    chartVisible: true
+  - name: ''
+    tileType: DATABASES_OVERVIEW
+    configured: true
+    bounds:
+      top: 190
+      left: 874
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: DATABASE
+      customName: Oracle
+      defaultName: Oracle
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        DATABASE:
+          ATTRIBUTE_BASED_DB_VENDOR:
+          - Oracle
+    chartVisible: true
+  - name: ''
+    tileType: DATABASES_OVERVIEW
+    configured: true
+    bounds:
+      top: 190
+      left: 1026
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: DATABASE
+      customName: SQL Server
+      defaultName: SQL Server
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        DATABASE:
+          ATTRIBUTE_BASED_DB_VENDOR:
+          - SQL Server CE
+    chartVisible: true
+  - name: ''
+    tileType: HOSTS
+    configured: true
+    bounds:
+      top: 38
+      left: 1254
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: HOST
+      customName: ''
+      defaultName: VMware hosts
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        HOST:
+          HOST_VIRTUALIZATION:
+          - '0'
+    chartVisible: true
+  - name: ''
+    tileType: HOSTS
+    configured: true
+    bounds:
+      top: 38
+      left: 1406
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: HOST
+      customName: ''
+      defaultName: EC2 hosts
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        HOST:
+          HOST_VIRTUALIZATION:
+          - '1'
+    chartVisible: true
+  - name: ''
+    tileType: HOSTS
+    configured: true
+    bounds:
+      top: 190
+      left: 1254
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: HOST
+      customName: ''
+      defaultName: OpenStack hosts
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        HOST:
+          HOST_VIRTUALIZATION:
+          - '9'
+    chartVisible: true
+  - name: ''
+    tileType: HOSTS
+    configured: true
+    bounds:
+      top: 190
+      left: 1406
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: HOST
+      customName: LPAR hosts
+      defaultName: LPAR hosts
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        HOST:
+          HOST_VIRTUALIZATION:
+          - '11'
+    chartVisible: true
+  - name: ''
+    tileType: HOSTS
+    configured: true
+    bounds:
+      top: 38
+      left: 1558
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: HOST
+      customName: ''
+      defaultName: Azure VM hosts
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        HOST:
+          HOST_VIRTUALIZATION:
+          - '7'
+    chartVisible: true
+  - name: ''
+    tileType: HOSTS
+    configured: true
+    bounds:
+      top: 190
+      left: 1558
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: HOST
+      customName: Physical Hosts
+      defaultName: Physical host hosts
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        HOST:
+          HOST_VIRTUALIZATION:
+          - '8'
+    chartVisible: true
+  - name: Network status
+    tileType: NETWORK_MEDIUM
+    configured: true
+    bounds:
+      top: 532
+      left: 1178
+      width: 304
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+  - name: Docker
+    tileType: DOCKER
+    configured: true
+    bounds:
+      top: 684
+      left: 1178
+      width: 304
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+  - name: VMware
+    tileType: VIRTUALIZATION
+    configured: true
+    bounds:
+      top: 684
+      left: 1482
+      width: 304
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    assignedEntities: []
+  - name: AWS
+    tileType: AWS
+    configured: true
+    bounds:
+      top: 532
+      left: 1482
+      width: 304
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    assignedEntities: []
+  - name: Smartscape
+    tileType: PURE_MODEL
+    configured: true
+    bounds:
+      top: 380
+      left: 1482
+      width: 304
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+  - name: Custom chart
+    tileType: CUSTOM_CHARTING
+    configured: true
+    bounds:
+      top: 380
+      left: 380
+      width: 342
+      height: 456
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: MIXED
+      customName: Slowest Services
+      defaultName: Custom chart
+      chartConfig:
+        legendShown: true
+        type: TOP_LIST
+        series:
+        - metric: CTS_SERVICE_RESPONSE_TIME
+          aggregation: MEDIAN
+          percentile: 
+          type: LINE
+          entityType: SERVICE
+          dimensions: []
+          sortAscending: false
+          sortColumn: false
+          aggregationRate: TOTAL
+        resultMetadata: {}
+      filtersPerEntityType: {}
+  - name: Custom chart
+    tileType: CUSTOM_CHARTING
+    configured: true
+    bounds:
+      top: 380
+      left: 760
+      width: 342
+      height: 456
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: MIXED
+      customName: Failing Services
+      defaultName: Custom chart
+      chartConfig:
+        legendShown: true
+        type: TOP_LIST
+        series:
+        - metric: CTS_FAILURE_RATE
+          aggregation: AVG
+          percentile: 
+          type: LINE
+          entityType: SERVICE
+          dimensions: []
+          sortAscending: false
+          sortColumn: false
+          aggregationRate: TOTAL
+        resultMetadata: {}
+      filtersPerEntityType: {}
+  - name: ''
+    tileType: SYNTHETIC_TESTS
+    configured: true
+    bounds:
+      top: 342
+      left: 152
+      width: 152
+      height: 152
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig:
+      type: WEB_CHECK
+      customName: Synthetic Tests
+      defaultName: Active synthetic monitor
+      chartConfig:
+        legendShown: true
+        type: TIMESERIES
+        series: []
+        resultMetadata: {}
+      filtersPerEntityType:
+        WEB_CHECK:
+          WEBCHECK_STATUS:
+          - Active
+    chartVisible: true
+  - name: Service health
+    tileType: SERVICES
+    configured: true
+    bounds:
+      top: 38
+      left: 494
+      width: 304
+      height: 304
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    filterConfig: 
+    chartVisible: true
+
+  - name: Markdown
+    tileType: MARKDOWN
+    configured: true
+    bounds:
+      top: 342
+      left: 1254
+      width: 190
+      height: 190
+    tileFilter:
+      timeframe: 
+      managementZone: 
+    markdown: |
+      ## Drilldowns
+
+      [Top Web Requests](https://yoj211.managed-sprint.dynalabs.io/e/ecc29184-1ae2-46dd-96fe-06997671fc57/#topglobalwebrequests)
+
+      [Database Requests](https://yoj211.managed-sprint.dynalabs.io/e/ecc29184-1ae2-46dd-96fe-06997671fc57/#topdbstatements)
+
+      [Exception Analysis](https://yoj211.managed-sprint.dynalabs.io/e/ecc29184-1ae2-46dd-96fe-06997671fc57/#exceptionsoverview)
+
+      [CPU Analysis](https://yoj211.managed-sprint.dynalabs.io/e/ecc29184-1ae2-46dd-96fe-06997671fc57/#codelevel)

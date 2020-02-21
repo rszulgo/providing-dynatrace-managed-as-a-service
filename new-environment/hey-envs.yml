@@ -1,0 +1,65 @@
+---
+- name: Automated environment provisioning to your teams at scale
+  hosts: localhost
+  vars_files:
+    - cluster-input.yaml
+    - variables.yml
+
+  tasks:
+    - name: Step 1 - Create an environment for the team {{teamName}}
+      uri: 
+        url: "{{ environmentsAPI }}?createToken=true"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ serviceProviderAPIToken }}"
+        body: "{{ environmentRequest | to_json}}"
+        status_code: 201,404
+        timeout: 30
+      register: environmentResponse
+      
+    - pause:
+        seconds: 15
+
+    - name: Step 2a - Create Configuration Token for the environment {{ environmentResponse.json.id }} ({{teamName}})
+      uri: 
+        url: "{{ clusterURL }}/e/{{ environmentResponse.json.id }}{{ tokensAPI }}"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ environmentResponse.json.tokenManagementToken }}"
+        body: "{{ configTokenRequest | to_json}}"
+        status_code: 201,404
+        timeout: 30
+      register: configTokenResponse
+      when:
+        - environmentResponse.status == 201
+
+    - name: Step 2b - Store the token in the file so it can be reused
+      copy:
+        content: "configToken: {{ configTokenResponse.json.token | quote }}"
+        dest: config-token.yaml
+    - name: Step 2c - Store the environment id in the file so it can be reused
+      copy:
+        content: "environmentID: {{ environmentResponse.json.id | quote }}"
+        dest: environment-id.yaml
+    
+    - name: Step 3 - Create the dashboard for the environment {{ environmentResponse.json.id }} ({{teamName}})
+      uri: 
+        url: "{{ clusterURL }}/e/{{ environmentResponse.json.id }}{{ dashboardAPI }}"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ configTokenResponse.json.token }}"
+        body: "{{ dashboardRequest | to_json}}"
+        status_code: 201,404
+        timeout: 30
+      register: dashboardResponse
+    
+    - name: Set dashboard URL
+      set_fact:
+        dashboardURL: "{{ clusterURL }}/e/{{ environmentResponse.json.id }}/#dashboard;id={{ dashboardResponse.json.id }}"
+
+    - name: Print Dashboard URL
+      debug:
+        msg: "Dashboard URL = {{ dashboardURL }}"
