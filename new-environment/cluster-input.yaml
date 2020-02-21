@@ -1,5 +1,5 @@
 # Set your cluster domain
-clusterURL: "https://team12-node01.perform.rocks"
+clusterURL: ""
 
 # Set your cluster's Service Provider API token
-serviceProviderAPIToken: "rlMlBSgFQ7Wps0dv0Zylg"
+serviceProviderAPIToken: ""

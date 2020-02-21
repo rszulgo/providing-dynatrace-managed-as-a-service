@@ -1,6 +1,17 @@
 ---
 # --------- Management Zones API --------
-mzAPI: "/api/config/v1/managementZones"
-mzRequest: 
-  name: "{{ mzName }}"
+tokensAPI: "api/cluster/v1/tokens"
+
+createTokenRequest: 
+  name: "{{ tokenName }}"
+  scopes:
+    - ClusterTokenManagement
+  expiresIn:
+    value: 30
+    unit: DAYS
+
+lookupTokenRequest:
+  token: "{{ clusterManagementToken }}"
+
+
 

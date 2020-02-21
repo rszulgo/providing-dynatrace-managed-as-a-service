@@ -1,20 +1,47 @@
 ---
-- name: Automated management provisioning
+- name: Automated Cluster Token Management token rotation
   hosts: localhost
   vars_files:
     - cluster-input.yaml
-    - environment-id.yaml
-    - config-token.yaml
-    - variables.yml
+    - variables.yaml
+    - cluster-management-token.yaml
 
   tasks:
-    - name: Create management zones {{ mzName }}
+    - name: 1. Lookup rotated token details
       uri: 
-          url: "{{ clusterURL }}/e/{{ environmentID }}{{ mzAPI }}"
-          method: POST
-          headers:
-            Content-Type: "application/json"
-            Authorization: "Api-Token {{ configToken }}"
-          body: "{{ mzRequest | to_json}}"
-          status_code: 201,404
-          timeout: 30
+        url: "{{ clusterURL }}/{{ tokensAPI }}/lookup"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ clusterManagementToken }}"
+        body: "{{ lookupTokenRequest | to_json}}"
+        status_code: 200
+        timeout: 30
+      register: rotatedTokenResponse
+
+    - name: 2. Create new token {{ tokenName }}
+      uri: 
+        url: "{{ clusterURL }}/{{ tokensAPI }}"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ clusterManagementToken }}"
+        body: "{{ createTokenRequest | to_json}}"
+        status_code: 201
+        timeout: 30
+      register: newTokenResponse
+
+    - name: 3. Store new token
+      copy:
+        content: "clusterManagementToken: {{ newTokenResponse.json.token | quote }}"
+        dest: cluster-management-token.yaml
+
+    - name: 4. Remove old token
+      uri: 
+        url: "{{ clusterURL }}/{{ tokensAPI }}/{{ rotatedTokenResponse.json.id }}"
+        method: DELETE
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ newTokenResponse.json.token }}"
+        status_code: 204
+        timeout: 30
