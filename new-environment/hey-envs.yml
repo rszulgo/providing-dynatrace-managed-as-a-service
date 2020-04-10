@@ -16,6 +16,7 @@
         body: "{{ environmentRequest | to_json}}"
         status_code: 201,404
         timeout: 30
+        validate_certs: false
       register: environmentResponse
       
     - pause:
@@ -31,6 +32,7 @@
         body: "{{ configTokenRequest | to_json}}"
         status_code: 201,404
         timeout: 30
+        validate_certs: false
       register: configTokenResponse
       when:
         - environmentResponse.status == 201
@@ -54,6 +56,7 @@
         body: "{{ dashboardRequest | to_json}}"
         status_code: 201,404
         timeout: 30
+        validate_certs: false
       register: dashboardResponse
     
     - name: Set dashboard URL

@@ -17,6 +17,7 @@
         body: "{{ lookupTokenRequest | to_json}}"
         status_code: 200
         timeout: 30
+        validate_certs: false
       register: rotatedTokenResponse
 
     - name: 2. Create new token {{ tokenName }}
@@ -29,6 +30,7 @@
         body: "{{ createTokenRequest | to_json}}"
         status_code: 201
         timeout: 30
+        validate_certs: false
       register: newTokenResponse
 
     - name: 3. Store new token
@@ -45,3 +47,4 @@
           Authorization: "Api-Token {{ newTokenResponse.json.token }}"
         status_code: 204
         timeout: 30
+        validate_certs: false
