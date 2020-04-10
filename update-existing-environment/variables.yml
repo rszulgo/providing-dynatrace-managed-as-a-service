@@ -1,0 +1,28 @@
+---
+#------------ Tokens API ---------
+tokensAPI: "/api/v1/tokens"
+
+configTokenRequest: 
+  name: "Config token"
+  scopes:
+    - "ReadConfig"
+    - "WriteConfig"
+  expiresIn:
+    value: "3600"
+    unit: "SECONDS"
+
+# --------- Environments API --------
+createEnvTokenRequest:
+  name: "MyTokenManager"
+  expiresIn:
+    value: 3600
+    unit: "SECONDS"
+
+
+# -------- Frequent Issue detection -----
+fidAPI: "/api/config/v1/frequentIssueDetection"
+fidRequest: 
+  frequentIssueDetectionApplicationEnabled: true
+  frequentIssueDetectionServiceEnabled: false
+  frequentIssueDetectionInfrastructureEnabled: true
+  

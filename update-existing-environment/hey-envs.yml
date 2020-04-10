@@ -1,0 +1,70 @@
+---
+- name: Automated environment configuration update 
+  hosts: localhost
+  vars_files:
+    - cluster-input.yaml
+    - environments.yml
+    - variables.yml
+
+  tasks:
+    - name: 1. Creating environments' token management
+      uri:
+        url: "{{ clusterURL }}/api/cluster/v1/environments/{{ item }}/tokenManagementToken"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ token }}"
+        body: "{{ createEnvTokenRequest | to_json}}"
+        status_code: 201,404
+        timeout: 30
+        validate_certs: false
+      register: environmentResponses
+      with_flattened: "{{ environments }}"
+      
+    - debug:
+        msg: "Executed {{ item.0 }}: {{ environmentResponses.results[item.0].url }}, status: {{ environmentResponses.results[item.0].status }}, token: {{ environmentResponses.results[item.0].json.token}}" 
+      with_indexed_items: "{{ environments }}"
+
+    - name: 2. Creating config tokens
+      uri: 
+        url: "{{ clusterURL }}/e/{{ item.1 }}{{ tokensAPI }}"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ environmentResponses.results[item.0].json.token }}"
+        body: "{{ configTokenRequest | to_json}}"
+        status_code: 201,404
+        timeout: 30
+        validate_certs: false
+      register: configTokenResponses
+      when:
+        - environmentResponses.results[item.0].status == 201
+      with_indexed_items: "{{ environments }}"
+
+    - name: 3. Update Frequent Issue Detection settings
+      uri: 
+        url: "{{ clusterURL }}/e/{{ item.1 }}{{ fidAPI }}"
+        method: PUT
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ configTokenResponses.results[item.0].json.token }}"
+        body: "{{ fidRequest | to_json}}"
+        status_code: 204,404
+        timeout: 30
+        validate_certs: false
+      with_indexed_items: "{{ environments }}"
+
+    - name: 4. Update Frequent Issue Detection settings
+      uri: 
+        url: "{{ clusterURL }}/e/{{ item.1 }}{{ fidAPI }}"
+        method: PUT
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Api-Token {{ configTokenResponses.results[item.0].json.token }}"
+        body: "{{ fidRequest | to_json}}"
+        status_code: 204,404
+        timeout: 30
+        validate_certs: false
+      with_indexed_items: "{{ environments }}"
+
+    
