@@ -4,6 +4,7 @@ Ansible automation to provide Dynatrace Managed as a service
 Currently you can find 3 automation examples with Ansible.
 - new-environment - automates provisioning of a new environment with a dashboard
 - update-environment - automates updating environment by creating a Management Zone
+- update-existing-environment - automate updating existing environments by setting Frequent Issue Detection and using EnvironmentManagementToken
 - token-rotation - automates `Cluster Token Management` token rotation
 
 ## Prerequisites
